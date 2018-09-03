@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>angular-animate</title>
+</head>
+<style>
+    ul{
+        list-style: none;
+    }
+    .item{
+        padding-bottom: 10px;
+    }
+    .item-div{
+        padding-bottom: 10px;
+    }
+    .tip{
+        color: #999999;
+        font-style: italic;
+    }
+    .person-item span{
+        padding: 0 20px;
+    }
+    .mk{
+        width: 100px;
+        height: 50px;
+        margin-bottom: 20px;
+        background-color:pink;
+        transition:all .5s ;
+    }
+    .mk.ng-hide{
+        height: 0;
+        width: 0;
+    }
+</style>
+<script src="https://cdn.bootcss.com/angular.js/1.4.6/angular.min.js"></script>
+<script src="https://cdn.bootcss.com/angular.js/1.4.6/angular-animate.min.js"></script>
+<body >
+<!-- 如果有写了module 和controller 则必须绑定-->
+<div ng-app="app" ng-controller="control">
+    <div class="mk" ng-show="mk">模块1</div>
+
+    <div>
+        <button ng-click="show()">显示模块</button>
+        <button ng-click="hide()">隐藏模块</button>
+    </div>
+</div>
+</body>
+<script>
+    //1.顶层设计师module 层，引入动画模块
+    //动画模块的作用是监听DOM变化，当dom改变时，添加一些类，例如：ng-hide 类
+    var app=angular.module('app',['ngAnimate']);
+
+
+
+    //2.module 下的controller 层,使用服务必须注入
+    app.controller('control',['$scope',function ($scope) {
+        //控制器层，主要是内部数据的维护 和 方法的维护
+        $scope.title='angular1.x 开始讲解';
+        $scope.mk=true;
+        $scope.show=function () {
+            $scope.mk=true;
+        }
+        $scope.hide=function () {
+            $scope.mk=false;
+        }
+
+    }]);
+
+
+
+</script>
+
+</html>

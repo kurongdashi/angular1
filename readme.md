@@ -5,8 +5,38 @@
 
 
 
+# angular-animate 动画
+[](http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular-animate.min.js)
+
+1. 引入ngAnimate 模块
+``` 
+ var app=angular.module('app',['ngAnimate']);
+```
+2. 作用监听dom变化添加一些css 类
+
+例如：ng-hide ，基于此我们自己定义动画
+
+```
+.mk{
+        width: 100px;
+        height: 50px;
+        margin-bottom: 20px;
+        background-color:pink;
+        transition:all .5s ;
+    }
+    .mk.ng-hide{
+        height: 0;
+        width: 0;
+    }
+
+```
+
 # angular-route
-[angular-route](https://cdn.bootcss.com/angular.js/1.7.0/angular-route.min.js);\
+[angular-route](https://cdn.bootcss.com/angular.js/1.7.0/angular-route.min.js)
+ 引入ngRoute 模块
+``` 
+ var app=angular.module('app',['ngRoute']);
+```
 
 1.  标签连接 a标签的 #! +标记实现
 ``` 
