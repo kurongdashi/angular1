@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>angular1.x 学习项目</title>
+</head>
+<style>
+    ul{
+        list-style: none;
+    }
+    .item{
+        padding-bottom: 10px;
+    }
+    .item-div{
+        padding-bottom: 10px;
+    }
+    .tip{
+        color: #999999;
+        font-style: italic;
+    }
+    .person-item span{
+        padding: 0 20px;
+    }
+</style>
+<script src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script>
+<body >
+<!-- 如果有写了module 和controller 则必须绑定-->
+<div ng-app="app" ng-controller="control">
+    <h1>{{title}}</h1>
+    <hr>
+    <h3>主要指令讲解</h3>
+
+
+        <div class="item">
+            <h4 class="tip">ng-model 双向数据绑定</h4>
+            <div class="item-div">
+                <span>姓名</span>
+                <span><input type="text" ng-model="name"></span>
+                <span>你输入的名字是：{{name}}</span>
+            </div>
+
+            <div>
+                <select ng-model="selectName" >
+                    <option value="{{person.name}}" ng-repeat="person in personData">{{person.name}}</option>
+                </select>
+                <span>你输入的名字是：{{selectName}}</span>
+            </div>
+        </div>
+
+        <div class="item">
+            <h4 class="tip">ng-repeate实现列表,ng-if,ng-show,条件判断显示 </h4>
+            <div>
+                <ul>
+                    <!--ng-if dom 不会渲染 -->
+                    <li ng-repeat="person in personData" class="person-item" ng-if="$index!=1">
+                        <!--当列表执行时，默认能获取到$index这个索引-->
+                        <span>{{$index}}</span>
+                        <span>{{person.name}}</span>
+                        <span>{{person.age}}</span>
+                        <span>{{person.address}}</span>
+                    </li>
+                    <li>
+                        <hr>
+                    </li>
+                    <!--ng-show dom 渲染,使用display:none  -->
+                    <li ng-repeat="person in personData |orderBy:'address' " class="person-item" ng-show="$index!=1">
+                        <!--当列表执行时，默认能获取到$index这个索引-->
+                        <span>{{$index}}</span>
+                        <span>{{person.name}}</span>
+                        <span>{{person.age}}</span>
+                        <span>{{person.address}}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="item">
+            <h4 class="tip">ng-click,事件处理 </h4>
+            <div>
+                <!--这个和js原始写法有写类似-->
+                <button ng-click="show()">事件处理</button>
+            </div>
+        </div>
+
+        <div class="item">
+            <!-- -->
+            <h4 class="tip">内置过滤器和自定义过滤器 </h4>
+            <div class="item-div">
+                <span>金额</span>
+                <span><input type="text" ng-model="money"></span>
+                <span>内置金额过滤：{{money|currency}}</span>
+            </div>
+            <div class="item-div">
+                <span>大小写</span>
+                <span><input type="text" ng-model="zimu" ></span>
+                <span>内置大小写过滤：{{zimu|uppercase}}</span>
+                <span>内置大小写过滤：{{zimu|lowercase}}</span>
+            </div>
+            <div class="item-div">
+                <span>自定义金额修饰器</span>
+                <span><input type="text" ng-model="rmb"></span>
+                <span>金额过滤：{{rmb|RMB}}</span>
+            </div>
+        </div>
+
+    <!--novalidate 阻止原生验证  name属性给表单-->
+    <form action="" name="myForm" novalidate>
+        <div class="item">
+            <h4 class="tip">表单验证</h4>
+            <div class="item-div">
+                <span>password</span>
+                <span><input type="text" ng-model="pwd"></span>
+                <span style="color:#f00;" ng-show="myForm.pwd.$pristine">你输入的名字</span>
+            </div>
+            <div>
+                <span>email</span>
+                <span><input type="text" ng-model="email"></span>
+                <span>你输入的邮箱是：{{email}}</span>
+            </div>
+        </div>
+
+    </form>
+
+    <div class="item">
+        <h4 class="tip">ng-includ代码片段 包含e</h4>
+        <!-- ng-include='code.html'  -->
+        <div class="item-div" ng-include="'code.html'"></div>
+        <div ng-include="'https://c.runoob.com/runoobtest/angular_include.php'"></div>
+    </div>
+
+
+</div>
+
+</body>
+<script>
+    //1.顶层设计师module 层
+    var app=angular.module('app',[]);
+
+    //2.module 下的controller 层,使用服务必须注入
+    app.controller('control',['$scope','$http','$timeout','myservice',function ($scope,$http,$timeout,myservice) {
+        //控制器层，主要是内部数据的维护 和 方法的维护
+        $scope.title='angular1.x 开始讲解';
+        $scope.personData=[
+            {name:'张三',age:22,address:'北京'},
+            {name:'王五',age:21,address:'上海'},
+            {name:'赵六',age:32,address:'广州'},
+            {name:'老王',age:42,address:'深圳'},
+        ]
+        $scope.show=function () {
+            alert('ng-click 开始处理事件了');
+        }
+        // 3.1 内置服务对象 $http,$timeout(),$interval()，使用服务时，必须从参数中注入
+        $timeout(function () {
+            console.log('调用，内置$timeout 服务');
+//           console.log(myservice);
+           myservice.showLog();
+        },1000);
+
+        // 发送网络
+
+//        $http.get({
+//            method:'get',
+//            url:'http://www.runoob.com/try/angularjs/data/sites.php',
+//
+//        }).then(function (res) {
+//            console.log(res);
+//        })
+
+    }]);
+
+    //3. service 层主要是方法的抽取，做业务逻辑处理
+    app.service('myservice',function () {
+        //TODO 服务层，主要是定义一下逻辑处理方法,用于整个module中
+        this.getData=function (a,b) {
+            return "￥"+a+b;
+        }
+        this.showLog=function () {
+            console.log('自定义服务，中的方法')
+        }
+
+    });
+
+    //4. filter 层主要是自定义一下过滤器，方便处理数据
+    // TODO 此次写法必须是闭包写法，因为，rmb|RMB 是将左侧的数值，传入右侧的方法中，然后返回
+    app.filter('RMB',function () {
+        return function (m) {
+         if(m=='undefined'){
+             m=0;
+         }
+            return '￥'+m;
+        }
+    });
+    //5. angular 下全局api isString(),isNumber(),废
+
+
+</script>
+
+</html>
