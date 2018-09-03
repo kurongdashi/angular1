@@ -29,15 +29,15 @@
 <div ng-app="app" ng-controller="control">
     <h1>{{title}}</h1>
     <hr>
+    <!-- 路由通过 #! +标记 -->
     <a href="#!/">首页</a>
-    <a href="#!/page1">页面1</a>
-    <a href="#!/page2">页面2</a>
+    <a href="#!/html1">加载html页面1</a>
+    <a href="#!/html2">加载html页面2</a>
+    <br>
+    <a href="#!/page1">加载templateUrl页面1</a>
+    <a href="#!/page2">加载templateUrl页面2</a>
     <!--ng-view 作为路由容器-->
-    <div ng-view >
-
-
-    </div>
-
+    <div ng-view ></div>
 
 </div>
 </body>
@@ -56,9 +56,12 @@
 
         $routeProvider
         // 第二个参数是对象，包括template ,redirectTo
-            .when('/',{redirectTo:'/page2.html'})
-            .when('/page1',{template:'./page1.html'})
-            .when('/page2',{template:'./page2.html'})
+            .when('/',{redirectTo:'/page1'})
+            .when('/html1',{template:'这里是插入普通html 内容1...'})
+            .when('/html2',{template:'普通html 内容2...'})
+            // templateUrl此方法是会发生请求去服务器获取模板
+            .when('/page1',{templateUrl:'page1.html'})
+            .when('/page2',{templateUrl:'page2.html'})
 
     }]);
 
